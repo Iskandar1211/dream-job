@@ -1,4 +1,4 @@
-import { Tabs } from "expo-router";
+import { Tabs, useRouter } from "expo-router";
 import React from "react";
 import QrCode from "@/assets/svg/qr-code.svg";
 import AlarmClock from "@/assets/svg/alarm-clock.svg";
@@ -13,11 +13,13 @@ import { ThemedText } from "@/components/themed-text";
 import { TouchableOpacity, StyleSheet } from "react-native";
 import Avatar from "@/assets/svg/avatar.svg";
 import ChevronRight from "@/assets/svg/chevron-right.svg";
+import ChevronLeft from "@/assets/svg/chevron-left.svg";
+import MessageCheck from "@/assets/svg/message-check.svg";
 
 export default function TabLayout() {
   const colorScheme = useColorScheme() ?? "dark";
   const colors = Colors[colorScheme];
-
+  const router = useRouter();
   return (
     <Tabs
       screenOptions={{
@@ -68,6 +70,22 @@ export default function TabLayout() {
         options={{
           title: "Payments",
           tabBarIcon: ({ color }) => <Payments color={color} />,
+          headerShown: true,
+          headerTitle: "",
+          headerTitleAlign: "center",
+          headerStyle: {
+            backgroundColor: colors.background,
+          },
+          headerLeft: () => (
+            <TouchableOpacity onPress={() => router.back()} style={styles.profileSection} activeOpacity={0.7}>
+              <ChevronLeft color={colors.text} />
+            </TouchableOpacity>
+          ),
+          headerRight: () => (
+            <TouchableOpacity style={styles.qrCodeSection} activeOpacity={0.7}>
+              <MessageCheck color={colors.text} />
+            </TouchableOpacity>
+          ),
         }}
       />
       <Tabs.Screen
