@@ -1,33 +1,74 @@
-import { Tabs } from 'expo-router';
-import React from 'react';
+import { Tabs } from "expo-router";
+import React from "react";
 
-import { HapticTab } from '@/components/haptic-tab';
-import { IconSymbol } from '@/components/ui/icon-symbol';
-import { Colors } from '@/constants/theme';
-import { useColorScheme } from '@/hooks/use-color-scheme';
+import AlarmClock from "@/assets/svg/alarm-clock.svg";
+import ChatTwoBubbles from "@/assets/svg/chat-two-bubbles.svg";
+import Home from "@/assets/svg/home.svg";
+import Payments from "@/assets/svg/payments.svg";
+import PieChart from "@/assets/svg/pie-chart.svg";
+import { HapticTab } from "@/components/haptic-tab";
+import { Colors } from "@/constants/theme";
+import { useColorScheme } from "@/hooks/use-color-scheme";
 
 export default function TabLayout() {
-  const colorScheme = useColorScheme();
+  const colorScheme = useColorScheme() ?? "dark";
+  const colors = Colors[colorScheme];
 
   return (
     <Tabs
       screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
+        tabBarActiveTintColor: colors.tabIconSelected,
+        tabBarActiveBackgroundColor: colors.background,
+        tabBarIconStyle: {
+          color: colors.tabIconDefault,
+        },
+        tabBarInactiveTintColor: colors.text,
         headerShown: false,
         tabBarButton: HapticTab,
-      }}>
+        tabBarStyle: {
+          backgroundColor: colors.background,
+          borderTopColor: colors.background,
+        },
+        tabBarLabelStyle: {
+          fontSize: 12,
+          fontWeight: "500",
+        },
+      }}
+    >
       <Tabs.Screen
         name="index"
         options={{
-          title: 'Home',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="house.fill" color={color} />,
+          title: "Home",
+          tabBarIcon: ({ color }) => <Home color={color} />,
         }}
       />
       <Tabs.Screen
-        name="explore"
+        name="payments"
         options={{
-          title: 'Explore',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="paperplane.fill" color={color} />,
+          title: "Payments",
+          tabBarIcon: ({ color }) => <Payments color={color} />,
+        }}
+      />
+      <Tabs.Screen
+        name="history"
+        options={{
+          title: "History",
+          tabBarIcon: ({ color }) => <AlarmClock color={color} />,
+        }}
+      />
+      <Tabs.Screen
+        name="analytics"
+        options={{
+          title: "Analytics",
+          tabBarIcon: ({ color }) => <PieChart color={color} />,
+        }}
+      />
+      <Tabs.Screen
+        name="chats"
+        options={{
+          title: "Chats",
+
+          tabBarIcon: ({ color }) => <ChatTwoBubbles color={color} />,
         }}
       />
     </Tabs>

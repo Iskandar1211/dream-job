@@ -1,98 +1,194 @@
-import { Image } from 'expo-image';
-import { Platform, StyleSheet } from 'react-native';
+import Avatar from "@/assets/svg/avatar.svg";
+import ChevronRight from "@/assets/svg/chevron-right.svg";
+import QrCode from "@/assets/svg/qr-code.svg";
+import { AccountCard } from "@/components/account-card";
+import { ExpenseSummary } from "@/components/expense-summary";
+import { QuickActions } from "@/components/quick-actions";
+import { ThemedText } from "@/components/themed-text";
+import { ThemedView } from "@/components/themed-view";
+import { TransactionList } from "@/components/transaction-list";
+import { Colors } from "@/constants/theme";
+import { useColorScheme } from "@/hooks/use-color-scheme";
+import { StatusBar } from "expo-status-bar";
+import Plus from "@/assets/svg/plus.svg";
+import {
+  FlatList,
+  ScrollView,
+  StyleSheet,
+  TouchableOpacity,
+  View,
+} from "react-native";
+import {
+  SafeAreaView,
+  useSafeAreaInsets,
+} from "react-native-safe-area-context";
 
-import { HelloWave } from '@/components/hello-wave';
-import ParallaxScrollView from '@/components/parallax-scroll-view';
-import { ThemedText } from '@/components/themed-text';
-import { ThemedView } from '@/components/themed-view';
-import { Link } from 'expo-router';
+type T_AccountCard = {
+  type: "Debit" | "Virtual";
+  balance: string;
+  cardNumber: string;
+};
 
 export default function HomeScreen() {
-  return (
-    <ParallaxScrollView
-      headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
-      headerImage={
-        <Image
-          source={require('@/assets/images/partial-react-logo.png')}
-          style={styles.reactLogo}
-        />
-      }>
-      <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Welcome!</ThemedText>
-        <HelloWave />
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 1: Try it</ThemedText>
-        <ThemedText>
-          Edit <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> to see changes.
-          Press{' '}
-          <ThemedText type="defaultSemiBold">
-            {Platform.select({
-              ios: 'cmd + d',
-              android: 'cmd + m',
-              web: 'F12',
-            })}
-          </ThemedText>{' '}
-          to open developer tools.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <Link href="/modal">
-          <Link.Trigger>
-            <ThemedText type="subtitle">Step 2: Explore</ThemedText>
-          </Link.Trigger>
-          <Link.Preview />
-          <Link.Menu>
-            <Link.MenuAction title="Action" icon="cube" onPress={() => alert('Action pressed')} />
-            <Link.MenuAction
-              title="Share"
-              icon="square.and.arrow.up"
-              onPress={() => alert('Share pressed')}
-            />
-            <Link.Menu title="More" icon="ellipsis">
-              <Link.MenuAction
-                title="Delete"
-                icon="trash"
-                destructive
-                onPress={() => alert('Delete pressed')}
-              />
-            </Link.Menu>
-          </Link.Menu>
-        </Link>
+  const colorScheme = useColorScheme() ?? "dark";
+  const colors = Colors[colorScheme as keyof typeof Colors];
+  const insets = useSafeAreaInsets();
+  const bottomInset = insets.bottom;
+  // Mock data
+  const transactionGroups = [
+    {
+      date: "Today",
+      transactions: [
+        {
+          id: "1",
+          name: "Matthew Billson",
+          category: "Money Transfer",
+          amount: "$56.19",
+          date: "Jun 9, 12:08",
+          icon: require("@/assets/images/matthew.png"),
+        },
+      ],
+    },
+    {
+      date: "Yesterday",
+      transactions: [
+        {
+          id: "2",
+          name: "Starbucks",
+          category: "Food",
+          amount: "$122.47",
+          date: "Jun 8, 19:21",
+          icon: require("@/assets/images/starbucks.png"),
+        },
+        {
+          id: "3",
+          name: "Netflix",
+          category: "Entertainment",
+          amount: "$13.17",
+          date: "Jun 8, 08:53",
+          icon: require("@/assets/images/netflix.png"),
+        },
+      ],
+    },
+    
+  ];
 
-        <ThemedText>
-          {`Tap the Explore tab to learn more about what's included in this starter app.`}
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 3: Get a fresh start</ThemedText>
-        <ThemedText>
-          {`When you're ready, run `}
-          <ThemedText type="defaultSemiBold">npm run reset-project</ThemedText> to get a fresh{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> directory. This will move the current{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> to{' '}
-          <ThemedText type="defaultSemiBold">app-example</ThemedText>.
-        </ThemedText>
-      </ThemedView>
-    </ParallaxScrollView>
+  const accountCards: T_AccountCard[] = [
+    {
+      type: "Debit",
+      balance: "$4,098.12",
+      cardNumber: "4385",
+    },
+    {
+      type: "Virtual",
+      balance: "$14.71",
+      cardNumber: "9081",
+    },
+  ];
+
+  return (
+    <ThemedView style={styles.container}>
+      <SafeAreaView
+        style={[styles.safeArea, { paddingBottom: bottomInset }]}
+        edges={["top"]}
+      >
+        {/* Header */}
+        <View style={styles.header}>
+          <TouchableOpacity style={styles.profileSection} activeOpacity={0.7}>
+            <Avatar />
+            <ThemedText style={[styles.profileName, { color: colors.text }]}>
+              Charlotte
+            </ThemedText>
+            <ChevronRight />
+          </TouchableOpacity>
+          <TouchableOpacity activeOpacity={0.7}>
+            <QrCode />
+          </TouchableOpacity>
+        </View>
+
+        {/* Quick Actions */}
+        <QuickActions />
+
+        {/* Account Cards */}
+        <FlatList
+          data={accountCards}
+          renderItem={({ item }) => (
+            <AccountCard
+              type={item.type}
+              balance={item.balance}
+              cardNumber={item.cardNumber}
+            />
+          )}
+          keyExtractor={(item) => item.cardNumber}
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          contentContainerStyle={styles.cardsSection}
+          ListFooterComponent={() => (
+            <TouchableOpacity activeOpacity={0.7}>
+              <View
+                style={[
+                  styles.addCardButton,
+                  { backgroundColor: colors.surface },
+                ]}
+              >
+                <Plus />
+              </View>
+            </TouchableOpacity>
+          )}
+        />
+
+        {/* Expense Summary */}
+        <ExpenseSummary />
+
+        {/* Transactions */}
+        <TransactionList groups={transactionGroups} />
+      </SafeAreaView>
+    </ThemedView>
   );
 }
 
 const styles = StyleSheet.create({
-  titleContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
+  container: {
+    flex: 1,
+    paddingHorizontal: 16,
+  },
+  safeArea: {
+    flex: 1,
+  },
+  header: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginBottom: 24,
+  },
+  profileSection: {
+    flexDirection: "row",
+    alignItems: "center",
     gap: 8,
   },
-  stepContainer: {
-    gap: 8,
-    marginBottom: 8,
+  avatar: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    justifyContent: "center",
+    alignItems: "center",
   },
-  reactLogo: {
-    height: 178,
-    width: 290,
-    bottom: 0,
-    left: 0,
-    position: 'absolute',
+
+  profileName: {
+    fontSize: 16,
+    fontWeight: "500",
+  },
+  cardsSection: {
+    flexDirection: "row",
+    marginVertical: 24,
+    gap: 12,
+  },
+
+  addCardButton: {
+    width: 40,
+    height: 98,
+    borderRadius: 16,
+    justifyContent: "center",
+    alignItems: "center",
   },
 });
