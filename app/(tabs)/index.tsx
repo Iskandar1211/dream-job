@@ -10,12 +10,7 @@ import { ThemedView } from "@/components/themed-view";
 import { TransactionList } from "@/components/transaction-list";
 import { Colors } from "@/constants/theme";
 import { useColorScheme } from "@/hooks/use-color-scheme";
-import {
-  FlatList,
-  StyleSheet,
-  TouchableOpacity,
-  View
-} from "react-native";
+import { FlatList, StyleSheet, TouchableOpacity, View } from "react-native";
 import {
   SafeAreaView,
   useSafeAreaInsets,
@@ -68,6 +63,27 @@ export default function HomeScreen() {
         },
       ],
     },
+    {
+      date: "Day After Tomorrow",
+      transactions: [
+        {
+          id: "4",
+          name: "Netflix",
+          category: "Entertainment",
+          amount: "$13.17",
+          date: "Jun 8, 08:53",
+          icon: require("@/assets/images/netflix.png"),
+        },
+        {
+          id: "5",
+          name: "Starbucks",
+          category: "Food",
+          amount: "$122.47",
+          date: "Jun 8, 19:21",
+          icon: require("@/assets/images/starbucks.png"),
+        },
+      ],
+    },
   ];
 
   const accountCards: T_AccountCard[] = [
@@ -99,54 +115,55 @@ export default function HomeScreen() {
         style={[styles.safeArea, { paddingBottom: bottomInset }]}
         edges={["top"]}
       >
-        {/* Header */}
-        <View style={styles.header}>
-          <TouchableOpacity style={styles.profileSection} activeOpacity={0.7}>
-            <Avatar />
-            <ThemedText style={[styles.profileName, { color: colors.text }]}>
-              Charlotte
-            </ThemedText>
-            <ChevronRight />
-          </TouchableOpacity>
-          <TouchableOpacity activeOpacity={0.7}>
-            <QrCode />
-          </TouchableOpacity>
-        </View>
-
-        {/* Quick Actions */}
-        <QuickActions />
-
-        {/* Account Cards */}
-        <FlatList
-          data={accountCards}
-          renderItem={({ item }) => (
-            <AccountCard
-              type={item.type}
-              balance={item.balance}
-              cardNumber={item.cardNumber}
-            />
-          )}
-          keyExtractor={(item) => item.cardNumber}
-          horizontal={true}
-          showsHorizontalScrollIndicator={false}
-          contentContainerStyle={styles.cardsSection}
-          ListFooterComponent={() => (
-            <TouchableOpacity activeOpacity={0.7}>
-              <View
-                style={[
-                  styles.addCardButton,
-                  { backgroundColor: colors.surface },
-                ]}
-              >
-                <Plus />
-              </View>
+        <View style={styles.content}>
+          {/* Header */}
+          <View style={styles.header}>
+            <TouchableOpacity style={styles.profileSection} activeOpacity={0.7}>
+              <Avatar />
+              <ThemedText style={[styles.profileName, { color: colors.text }]}>
+                Charlotte
+              </ThemedText>
+              <ChevronRight />
             </TouchableOpacity>
-          )}
-        />
+            <TouchableOpacity activeOpacity={0.7}>
+              <QrCode />
+            </TouchableOpacity>
+          </View>
 
-        {/* Expense Summary */}
-        <ExpenseSummary />
+          {/* Quick Actions */}
+          <QuickActions />
 
+          {/* Account Cards */}
+          <FlatList
+            data={accountCards}
+            renderItem={({ item }) => (
+              <AccountCard
+                type={item.type}
+                balance={item.balance}
+                cardNumber={item.cardNumber}
+              />
+            )}
+            keyExtractor={(item) => item.cardNumber}
+            horizontal={true}
+            showsHorizontalScrollIndicator={false}
+            contentContainerStyle={styles.cardsSection}
+            ListFooterComponent={() => (
+              <TouchableOpacity activeOpacity={0.7}>
+                <View
+                  style={[
+                    styles.addCardButton,
+                    { backgroundColor: colors.surface },
+                  ]}
+                >
+                  <Plus />
+                </View>
+              </TouchableOpacity>
+            )}
+          />
+
+          {/* Expense Summary */}
+          <ExpenseSummary />
+        </View>
         {/* Transactions */}
         <TransactionList groups={transactionGroups} />
       </SafeAreaView>
@@ -162,6 +179,7 @@ const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
   },
+  content: {},
   header: {
     flexDirection: "row",
     justifyContent: "space-between",
