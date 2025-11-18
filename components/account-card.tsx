@@ -1,5 +1,6 @@
 import cardBgGray from "@/assets/images/card-bg-gray.png";
 import cardBgOrange from "@/assets/images/card-bg-orange.png";
+import MasterCard from "@/assets/svg/master-card.svg";
 import { Colors } from "@/constants/theme";
 import { useColorScheme } from "@/hooks/use-color-scheme";
 import {
@@ -9,7 +10,6 @@ import {
   Text,
   View,
 } from "react-native";
-import MasterCard from "@/assets/svg/master-card.svg";
 import { CircleSeparator } from "./ui/circle-separator";
 
 type T_AccountCardType = {

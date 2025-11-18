@@ -1,5 +1,6 @@
 import Avatar from "@/assets/svg/avatar.svg";
 import ChevronRight from "@/assets/svg/chevron-right.svg";
+import Plus from "@/assets/svg/plus.svg";
 import QrCode from "@/assets/svg/qr-code.svg";
 import { AccountCard } from "@/components/account-card";
 import { ExpenseSummary } from "@/components/expense-summary";
@@ -9,14 +10,11 @@ import { ThemedView } from "@/components/themed-view";
 import { TransactionList } from "@/components/transaction-list";
 import { Colors } from "@/constants/theme";
 import { useColorScheme } from "@/hooks/use-color-scheme";
-import { StatusBar } from "expo-status-bar";
-import Plus from "@/assets/svg/plus.svg";
 import {
   FlatList,
-  ScrollView,
   StyleSheet,
   TouchableOpacity,
-  View,
+  View
 } from "react-native";
 import {
   SafeAreaView,
@@ -70,7 +68,6 @@ export default function HomeScreen() {
         },
       ],
     },
-    
   ];
 
   const accountCards: T_AccountCard[] = [
@@ -83,6 +80,16 @@ export default function HomeScreen() {
       type: "Virtual",
       balance: "$14.71",
       cardNumber: "9081",
+    },
+    {
+      type: "Debit",
+      balance: "$10.55",
+      cardNumber: "2345",
+    },
+    {
+      type: "Virtual",
+      balance: "$10.55",
+      cardNumber: "6789",
     },
   ];
 
@@ -120,7 +127,7 @@ export default function HomeScreen() {
             />
           )}
           keyExtractor={(item) => item.cardNumber}
-          horizontal
+          horizontal={true}
           showsHorizontalScrollIndicator={false}
           contentContainerStyle={styles.cardsSection}
           ListFooterComponent={() => (
@@ -179,7 +186,6 @@ const styles = StyleSheet.create({
     fontWeight: "500",
   },
   cardsSection: {
-    flexDirection: "row",
     marginVertical: 24,
     gap: 12,
   },
