@@ -1,7 +1,7 @@
 import Avatar from "@/assets/svg/avatar.svg";
 import ChevronRight from "@/assets/svg/chevron-right.svg";
 import Plus from "@/assets/svg/plus.svg";
-import QrCode from "@/assets/svg/qr-code.svg";
+
 import { AccountCard } from "@/components/account-card";
 import { ExpenseSummary } from "@/components/expense-summary";
 import { QuickActions } from "@/components/quick-actions";
@@ -111,62 +111,43 @@ export default function HomeScreen() {
 
   return (
     <ThemedView style={styles.container}>
-      <SafeAreaView
-        style={[styles.safeArea, { paddingBottom: bottomInset }]}
-        edges={["top"]}
-      >
-        <View style={styles.content}>
-          {/* Header */}
-          <View style={styles.header}>
-            <TouchableOpacity style={styles.profileSection} activeOpacity={0.7}>
-              <Avatar />
-              <ThemedText style={[styles.profileName, { color: colors.text }]}>
-                Charlotte
-              </ThemedText>
-              <ChevronRight />
-            </TouchableOpacity>
+      <View style={styles.content}>
+        {/* Quick Actions */}
+        <QuickActions />
+
+        {/* Account Cards */}
+        <FlatList
+          data={accountCards}
+          renderItem={({ item }) => (
+            <AccountCard
+              type={item.type}
+              balance={item.balance}
+              cardNumber={item.cardNumber}
+            />
+          )}
+          keyExtractor={(item) => item.cardNumber}
+          horizontal={true}
+          showsHorizontalScrollIndicator={false}
+          contentContainerStyle={styles.cardsSection}
+          ListFooterComponent={() => (
             <TouchableOpacity activeOpacity={0.7}>
-              <QrCode />
+              <View
+                style={[
+                  styles.addCardButton,
+                  { backgroundColor: colors.surface },
+                ]}
+              >
+                <Plus />
+              </View>
             </TouchableOpacity>
-          </View>
+          )}
+        />
 
-          {/* Quick Actions */}
-          <QuickActions />
-
-          {/* Account Cards */}
-          <FlatList
-            data={accountCards}
-            renderItem={({ item }) => (
-              <AccountCard
-                type={item.type}
-                balance={item.balance}
-                cardNumber={item.cardNumber}
-              />
-            )}
-            keyExtractor={(item) => item.cardNumber}
-            horizontal={true}
-            showsHorizontalScrollIndicator={false}
-            contentContainerStyle={styles.cardsSection}
-            ListFooterComponent={() => (
-              <TouchableOpacity activeOpacity={0.7}>
-                <View
-                  style={[
-                    styles.addCardButton,
-                    { backgroundColor: colors.surface },
-                  ]}
-                >
-                  <Plus />
-                </View>
-              </TouchableOpacity>
-            )}
-          />
-
-          {/* Expense Summary */}
-          <ExpenseSummary />
-        </View>
-        {/* Transactions */}
-        <TransactionList groups={transactionGroups} />
-      </SafeAreaView>
+        {/* Expense Summary */}
+        <ExpenseSummary />
+      </View>
+      {/* Transactions */}
+      <TransactionList groups={transactionGroups} />
     </ThemedView>
   );
 }
