@@ -1,113 +1,18 @@
-import Avatar from "@/assets/svg/avatar.svg";
-import ChevronRight from "@/assets/svg/chevron-right.svg";
 import Plus from "@/assets/svg/plus.svg";
 
 import { AccountCard } from "@/components/account-card";
 import { ExpenseSummary } from "@/components/expense-summary";
 import { QuickActions } from "@/components/quick-actions";
-import { ThemedText } from "@/components/themed-text";
 import { ThemedView } from "@/components/themed-view";
 import { TransactionList } from "@/components/transaction-list";
 import { Colors } from "@/constants/theme";
+import { ACCOUNT_CARDS, TRANSACTION_GROUPS } from "@/constants/transaction";
 import { useColorScheme } from "@/hooks/use-color-scheme";
 import { FlatList, StyleSheet, TouchableOpacity, View } from "react-native";
-import {
-  SafeAreaView,
-  useSafeAreaInsets,
-} from "react-native-safe-area-context";
-
-type T_AccountCard = {
-  type: "Debit" | "Virtual";
-  balance: string;
-  cardNumber: string;
-};
 
 export default function HomeScreen() {
   const colorScheme = useColorScheme() ?? "dark";
   const colors = Colors[colorScheme as keyof typeof Colors];
-  const insets = useSafeAreaInsets();
-  const bottomInset = insets.bottom;
-  // Mock data
-  const transactionGroups = [
-    {
-      date: "Today",
-      transactions: [
-        {
-          id: "1",
-          name: "Matthew Billson",
-          category: "Money Transfer",
-          amount: "$56.19",
-          date: "Jun 9, 12:08",
-          icon: require("@/assets/images/matthew.png"),
-        },
-      ],
-    },
-    {
-      date: "Yesterday",
-      transactions: [
-        {
-          id: "2",
-          name: "Starbucks",
-          category: "Food",
-          amount: "$122.47",
-          date: "Jun 8, 19:21",
-          icon: require("@/assets/images/starbucks.png"),
-        },
-        {
-          id: "3",
-          name: "Netflix",
-          category: "Entertainment",
-          amount: "$13.17",
-          date: "Jun 8, 08:53",
-          icon: require("@/assets/images/netflix.png"),
-        },
-      ],
-    },
-    {
-      date: "Day After Tomorrow",
-      transactions: [
-        {
-          id: "4",
-          name: "Netflix",
-          category: "Entertainment",
-          amount: "$13.17",
-          date: "Jun 8, 08:53",
-          icon: require("@/assets/images/netflix.png"),
-        },
-        {
-          id: "5",
-          name: "Starbucks",
-          category: "Food",
-          amount: "$122.47",
-          date: "Jun 8, 19:21",
-          icon: require("@/assets/images/starbucks.png"),
-        },
-      ],
-    },
-  ];
-
-  const accountCards: T_AccountCard[] = [
-    {
-      type: "Debit",
-      balance: "$4,098.12",
-      cardNumber: "4385",
-    },
-    {
-      type: "Virtual",
-      balance: "$14.71",
-      cardNumber: "9081",
-    },
-    {
-      type: "Debit",
-      balance: "$10.55",
-      cardNumber: "2345",
-    },
-    {
-      type: "Virtual",
-      balance: "$10.55",
-      cardNumber: "6789",
-    },
-  ];
 
   return (
     <ThemedView style={styles.container}>
@@ -117,7 +22,7 @@ export default function HomeScreen() {
 
         {/* Account Cards */}
         <FlatList
-          data={accountCards}
+          data={ACCOUNT_CARDS}
           renderItem={({ item }) => (
             <AccountCard
               type={item.type}
@@ -147,7 +52,7 @@ export default function HomeScreen() {
         <ExpenseSummary />
       </View>
       {/* Transactions */}
-      <TransactionList groups={transactionGroups} />
+      <TransactionList groups={TRANSACTION_GROUPS} />
     </ThemedView>
   );
 }
