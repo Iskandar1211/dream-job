@@ -18,8 +18,8 @@ const darkSurfaceSecondary = '#2A2A2A'; // Secondary surface
 
 // Text colors
 const textPrimary = '#FFFFFF';
-const textSecondary = '#B3B3B3';
-const textTertiary = '#FFFFFF';
+const textSecondary = '#AEAEAE';
+const textTertiary = '#616161';
 
 // Card gradient colors
 const cardOrangeStart = '#FF6B35';
