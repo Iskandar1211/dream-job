@@ -1,3 +1,5 @@
+import ChevronLeft from "@/assets/svg/chevron-left.svg";
+import MessageCheck from "@/assets/svg/message-check.svg";
 import {
   DarkTheme,
   DefaultTheme,
@@ -6,12 +8,10 @@ import {
 import { Stack, useRouter } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import "react-native-reanimated";
-import ChevronLeft from "@/assets/svg/chevron-left.svg";
-import MessageCheck from "@/assets/svg/message-check.svg";
 
-import { useColorScheme } from "@/hooks/use-color-scheme";
 import { Colors } from "@/constants/theme";
-import { TouchableOpacity, StyleSheet } from "react-native";
+import { useColorScheme } from "@/hooks/use-color-scheme";
+import { TouchableOpacity } from "react-native";
 
 export const unstable_settings = {
   anchor: "(tabs)",
@@ -28,8 +28,6 @@ export default function RootLayout() {
         <Stack.Screen
           name="notifications"
           options={{
-            title: "Payments",
-
             headerShown: true,
             headerTitle: "Notifications",
             headerTitleStyle: {
@@ -45,12 +43,12 @@ export default function RootLayout() {
                 onPress={() => router.back()}
                 activeOpacity={0.7}
               >
-                <ChevronLeft color={colors.text} />
+                <ChevronLeft color={colors.icon} />
               </TouchableOpacity>
             ),
             headerRight: () => (
               <TouchableOpacity activeOpacity={0.7}>
-                <MessageCheck color={colors.text} />
+                <MessageCheck color={colors.icon} />
               </TouchableOpacity>
             ),
           }}
